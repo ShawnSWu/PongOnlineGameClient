@@ -114,6 +114,7 @@ class LobbyView(BasicView):
         elif event.key == pygame.K_RETURN:
             if self.selected == self.get_room_count():
                 # 創建房間
+                print("創建房間")
                 room_name = "T ROOM"
                 self.create_room(self.socket_conn, room_name)
             elif self.selected == self.get_room_count() + 1:

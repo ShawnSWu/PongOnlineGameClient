@@ -15,6 +15,7 @@ StartBattleHeader = "SB"
 BattleSituationHeader = "BS"
 BattleOperationHeader = "BO"
 GiveUpBattleHeader = "GB"
+GiveUpByMyselfHeader = "GM"
 
 
 def _remove_header_and_terminator(payload):

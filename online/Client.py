@@ -101,7 +101,16 @@ class Client:
         # 對手投降
         elif header == Payload.GiveUpBattleHeader:
             # 顯示對手投降
+            print("對手投降")
+            self.scene = SceneRoom
+
             pass
+
+        # 自己投降
+        elif header == Payload.GiveUpByMyselfHeader:
+            # 自己投降
+            print("自己投降")
+            self.scene = SceneRoom
 
         # 戰鬥準備開始
         elif header == Payload.StartBattleHeader:
