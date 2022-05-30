@@ -9,6 +9,7 @@ from view.BattleView import BattleView
 from view.LobbyView import LobbyView
 from view.RoomView import RoomView
 
+SceneHome = 'HOME'
 SceneLobby = 'LOBBY'
 SceneRoom = 'ROOM'
 SceneBattle = 'BATTLE'
@@ -62,6 +63,9 @@ class Client:
             elif self.scene == SceneCountDownBattle:
                 self.battle.draw_battle_ready_start_hint()
 
+            elif self.scene == SceneHome:
+                break
+
             self.lobby.screen_update_view()
 
     def connect_server(self):
@@ -111,6 +115,11 @@ class Client:
             # 自己投降
             print("自己投降")
             self.scene = SceneRoom
+
+        # 成功離開大廳通知
+        elif header == Payload.LeaveLobby:
+            print("成功離開大廳")
+            self.scene = SceneHome
 
         # 戰鬥準備開始
         elif header == Payload.StartBattleHeader:
