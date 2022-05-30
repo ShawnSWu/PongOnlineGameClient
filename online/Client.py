@@ -12,6 +12,7 @@ from view.RoomView import RoomView
 SceneLobby = 'LOBBY'
 SceneRoom = 'ROOM'
 SceneBattle = 'BATTLE'
+SceneCountDownBattle = 'COUNT_DOWN_BATTLE'
 
 lock = threading.Lock()
 
@@ -58,6 +59,9 @@ class Client:
                 self.battle.listen_player_operation()
                 self.battle.draw()
 
+            elif self.scene == SceneCountDownBattle:
+                self.battle.draw_battle_ready_start_hint()
+
             self.lobby.screen_update_view()
 
     def connect_server(self):
@@ -101,12 +105,13 @@ class Client:
 
         # 戰鬥準備開始
         elif header == Payload.StartBattleHeader:
-            self.scene = SceneBattle
+            self.scene = SceneCountDownBattle
 
             # 填入戰鬥房間id
             self.battle.room_id = self.room.players_data.room_id
 
         # 戰鬥過程封包
         elif header == Payload.BattleSituationHeader:
+            self.scene = SceneBattle
             battle_info = parse_battle_info(payload)
             self.battle.update_battle_situation(battle_info)

@@ -81,6 +81,11 @@ class BattleView(BasicView):
         self.right_paddle.y = player2_y
         self.right_paddle.score = player2_score
 
+    def draw_battle_ready_start_hint(self):
+        self.clear_view(self.bg_color)
+        # 戰鬥準備開始提醒
+        self.draw_game_text("READY", 280, 284, 150)
+
 
     def listen_player_operation(self):
         for event in pygame.event.get():
