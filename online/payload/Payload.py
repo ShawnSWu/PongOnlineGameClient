@@ -102,3 +102,8 @@ def battle_move_up_payload_template():
 
 def battle_move_down_payload_template():
     return "BOD~"
+
+
+def battle_give_up_payload_template(room_id):
+    return "GB{room_id},~".format(room_id=room_id)
+

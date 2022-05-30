@@ -17,14 +17,17 @@ class RoomView(BasicView):
         self.bg_color = (38, 38, 38)
         self.socket_conn = socket_conn
         self.room_id = -1
+        self.room_name = ''
         self.selected = 0
         self.selected_color = (65, 105, 105)
         self.players = create_empty_player_panel()
+        self.players_data = None
 
     def update_players(self, room_in_model):
-        room_id = room_in_model.room_id
-        room_name = room_in_model.room_name
-        self.room_id = room_id
+        self.players_data = room_in_model
+
+        self.room_name = room_in_model.room_name
+        self.room_id = room_in_model.room_id
 
         player1_id = room_in_model.player1_id
         player1_name = room_in_model.player1_name
@@ -51,9 +54,6 @@ class RoomView(BasicView):
 
     def listen_player_operation(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
             if event.type == pygame.KEYDOWN:
                 self.handle_operation(event)
 
@@ -84,7 +84,7 @@ class RoomView(BasicView):
                     self.leave_room(self.room_id)
 
     def draw_ready_button(self, bg_color):
-        self.draw_game_text("READY TO BATTLE", 295, 500, 50, bg_color)
+        self.draw_game_text("READY TO BATTLE", 260, 500, 50, bg_color)
 
     def draw_leave_button(self, bg_color):
         self.draw_game_text("LEAVE", 360, 540, 50, bg_color)

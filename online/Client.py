@@ -60,7 +60,6 @@ class Client:
 
             self.lobby.screen_update_view()
 
-
     def connect_server(self):
         SERVER_IP = "127.0.0.1"
         SERVER_PORT = 4321
@@ -95,11 +94,17 @@ class Client:
             room_internal_model = parse_player_list(payload)
             self.room.update_players(room_internal_model)
 
+        # 對手投降
+        elif header == Payload.GiveUpBattleHeader:
+            # 顯示對手投降
+            pass
+
         # 戰鬥準備開始
         elif header == Payload.StartBattleHeader:
             self.scene = SceneBattle
 
-            # 初始化戰鬥畫面
+            # 填入戰鬥房間id
+            self.battle.room_id = self.room.players_data.room_id
 
         # 戰鬥過程封包
         elif header == Payload.BattleSituationHeader:

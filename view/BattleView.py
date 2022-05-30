@@ -2,7 +2,8 @@ import threading
 
 import pygame
 
-from online.payload.Payload import battle_move_up_payload_template, battle_move_down_payload_template
+from online.payload.Payload import battle_move_up_payload_template, battle_move_down_payload_template, \
+    battle_give_up_payload_template
 from view.BasicView import BasicView
 
 BALL_RADIUS = 7
@@ -10,9 +11,8 @@ BALL_RADIUS = 7
 lock = threading.Lock()
 
 
-class Paddle:
+class PlayerPaddle:
     COLOR = (255, 255, 255)
-    VEL = 4
 
     def __init__(self, x, y):
         self.x = self.original_x = x
@@ -27,8 +27,6 @@ class Paddle:
 
 
 class Ball:
-    MAX_VEL = 5
-
     def __init__(self, x, y, radius):
         self.x = self.original_x = x
         self.y = self.original_y = y
@@ -43,9 +41,10 @@ class BattleView(BasicView):
         self.socket_conn = socket_conn
         self.bg_color = (38, 38, 38)
         w, h = self.get_width_height()
-        self.left_paddle = Paddle(0, h/2)
-        self.right_paddle = Paddle(w-50, h/2)
-        self.ball = Ball(w/2, h/2, BALL_RADIUS)
+        self.left_paddle = PlayerPaddle(0, h / 2)
+        self.room_id = ''
+        self.right_paddle = PlayerPaddle(w - 50, h / 2)
+        self.ball = Ball(w / 2, h / 2, BALL_RADIUS)
 
     def draw(self):
         lock.acquire()
@@ -85,9 +84,6 @@ class BattleView(BasicView):
 
     def listen_player_operation(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
             if event.type == pygame.KEYDOWN:
                 self.handle_operation(event)
 
@@ -97,7 +93,7 @@ class BattleView(BasicView):
         elif event.key == pygame.K_DOWN:
             self.battle_move_down()
         elif event.key == pygame.K_RETURN:
-            pass
+            self.battle_give_up()
 
     def battle_move_up(self):
         payload = battle_move_up_payload_template()
@@ -105,4 +101,8 @@ class BattleView(BasicView):
 
     def battle_move_down(self):
         payload = battle_move_down_payload_template()
+        self.socket_conn.send(str.encode(payload))
+
+    def battle_give_up(self):
+        payload = battle_give_up_payload_template(self.room_id)
         self.socket_conn.send(str.encode(payload))
