@@ -15,8 +15,8 @@ class PlayerPaddle:
     COLOR = (255, 255, 255)
 
     def __init__(self, x, y):
-        self.x = self.original_x = x
-        self.y = self.original_y = y
+        self.x = x
+        self.y = y
         self.width = 10
         self.height = 150
         self.score = 0
@@ -52,9 +52,12 @@ class BattleView(BasicView):
 
         left_paddle = self.left_paddle
         self.draw_rect(left_paddle.x, left_paddle.y, left_paddle.width, left_paddle.height, left_paddle.COLOR)
+        self.draw_game_text(left_paddle.score, 195, 15, 150)
+
 
         right_paddle = self.right_paddle
         self.draw_rect(right_paddle.x, right_paddle.y, right_paddle.width, right_paddle.height, right_paddle.COLOR)
+        self.draw_game_text(right_paddle.score, 580, 15, 150)
 
         ball = self.ball
         pygame.draw.circle(self.screen, ball.color, (ball.x, ball.y), ball.radius)

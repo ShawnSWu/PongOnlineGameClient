@@ -11,6 +11,7 @@ lock = threading.Lock()
 ReadyBattle = 0
 LeaveRoom = 1
 
+
 class RoomView(BasicView):
     def __init__(self, screen, socket_conn):
         super().__init__(screen)
@@ -18,6 +19,7 @@ class RoomView(BasicView):
         self.socket_conn = socket_conn
         self.room_id = -1
         self.room_name = ''
+        self.room_name_board_location = (270, 10)
         self.selected = 0
         self.selected_color = (65, 105, 105)
         self.players = create_empty_player_panel()
@@ -97,8 +99,12 @@ class RoomView(BasicView):
         lock.acquire()
         self.clear_view(self.bg_color)
 
-        room_name_x, room_name_y = self.calculate_room_name_text_center(self.room_name, 356), 20
-        self.draw_game_text(self.room_name, room_name_x, room_name_y, 50)
+        room_name_board_x = self.room_name_board_location[0]
+        room_name_board_y = self.room_name_board_location[1]
+        self.draw_image(r'img/room_name_board.png', room_name_board_x, room_name_board_y)
+
+        room_name_x, room_name_y = self.calculate_room_name_text_center(self.room_name, 356), 40
+        self.draw_game_text(self.room_name, room_name_x, room_name_y, text_color=(0, 0, 0), size=50)
 
         if self.selected == 0:
             self.draw_ready_button(self.selected_color)
@@ -142,7 +148,7 @@ class RoomView(BasicView):
 
     def calculate_room_name_text_center(self, text, base_locate):
         size = len(text)
-        return base_locate - (size*5) + 20
+        return base_locate - (size * 5) + 20
 
 
 def create_empty_player_panel():
@@ -150,5 +156,5 @@ def create_empty_player_panel():
         PlayerPanel(70, 85, player_name='', name_text_location=(180, 287),
                     description_text_location=(117, 348), ready_tag_location=(98, 78)),
         PlayerPanel(470, 85, player_name='', name_text_location=(580, 287),
-                    description_text_location=(516, 348),  ready_tag_location=(500, 78)),
+                    description_text_location=(516, 348), ready_tag_location=(500, 78)),
     ]

@@ -46,7 +46,7 @@ class Client:
         clock = pygame.time.Clock()
         # Lobby Loop
         while True:
-            clock.tick(30)
+            clock.tick(120)
 
             if self.scene == SceneLobby:
                 self.lobby.listen_player_operation()
