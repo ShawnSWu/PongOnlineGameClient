@@ -92,12 +92,14 @@ class Client:
 
         # 房間清單
         if header == Payload.RoomListHeader:
+            print("進入大廳")
             self.scene = SceneLobby
             room_list = parse_room_list(payload)
             self.lobby.update_rooms_data(room_list)
 
         # 房間內部細節
         elif header == Payload.RoomDetailHeader:
+            print("進入房間")
             self.scene = SceneRoom
             room_internal_model = parse_player_list(payload)
             self.room.update_players(room_internal_model)

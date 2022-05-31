@@ -43,6 +43,8 @@ class RoomView(BasicView):
 
         if player1.player_id != '':
             player1.display = True
+        else:
+            player1.display = False
 
         player2 = self.players[1]
         player2.player_id = player2_id
@@ -51,6 +53,8 @@ class RoomView(BasicView):
 
         if player2.player_id != '':
             player2.display = True
+        else:
+            player2.display = False
 
     def listen_player_operation(self):
         for event in pygame.event.get():
@@ -84,7 +88,7 @@ class RoomView(BasicView):
                     self.leave_room(self.room_id)
 
     def draw_ready_button(self, bg_color):
-        self.draw_game_text("READY TO BATTLE", 260, 500, 50, bg_color)
+        self.draw_game_text("READY TO BATTLE", 257, 500, 50, bg_color)
 
     def draw_leave_button(self, bg_color):
         self.draw_game_text("LEAVE", 360, 540, 50, bg_color)
