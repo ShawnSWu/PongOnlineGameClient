@@ -4,7 +4,7 @@ import socket
 import pygame
 
 from online.payload import Payload
-from online.payload.Payload import parse_room_list, parse_player_list, parse_battle_info
+from online.payload.Payload import parse_room_list, parse_player_list, parse_battle_info, parse_battle_over
 from view.BattleView import BattleView
 from view.LobbyView import LobbyView
 from view.RoomView import RoomView
@@ -135,3 +135,11 @@ class Client:
             self.scene = SceneBattle
             battle_info = parse_battle_info(payload)
             self.battle.update_battle_situation(battle_info)
+
+        # 戰鬥結束通知
+        elif header == Payload.BattleOverHeader:
+            self.scene = SceneRoom
+            # 戰鬥結束提醒
+            print("戰鬥結束")
+            pass
+

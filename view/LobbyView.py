@@ -115,7 +115,7 @@ class LobbyView(BasicView):
             if self.selected == self.get_room_count():
                 # 創建房間
                 print("創建房間")
-                room_name = "T ROOM"
+                room_name = "My ROOM"
                 self.create_room(self.socket_conn, room_name)
             elif self.selected == self.get_room_count() + 1:
                 # 離開大廳
@@ -154,40 +154,40 @@ def create_empty_room_panel():
                       player_count_text=GameText('', 306, 60, 40),
                       crate_date_text=GameText('', 51, 122, 35),
                       room_status_text=GameText('', 265, 122, 35),
-                      icon_location=(175, 55)),
+                      icon_location=(230, 55)),
 
         RoomItemPanel(x=38, y=193,
                       room_name_text=GameText('', 51, 210, 45),
                       player_count_text=GameText('', 306, 210, 40),
                       crate_date_text=GameText('', 51, 270, 35),
                       room_status_text=GameText('', 265, 270, 35),
-                      icon_location=(175, 205)),
+                      icon_location=(230, 205)),
 
         RoomItemPanel(x=38, y=344,
                       room_name_text=GameText('', 51, 360, 45),
                       player_count_text=GameText('', 306, 360, 40),
                       crate_date_text=GameText('', 51, 420, 35),
                       room_status_text=GameText('', 265, 420, 35),
-                      icon_location=(175, 353)),
+                      icon_location=(230, 353)),
 
         RoomItemPanel(x=414, y=42,
                       room_name_text=GameText('', 430, 60, 45),
                       player_count_text=GameText('', 683, 60, 40),
                       crate_date_text=GameText('', 427, 122, 35),
                       room_status_text=GameText('', 644, 122, 35),
-                      icon_location=(555, 52)),
+                      icon_location=(610, 52)),
 
         RoomItemPanel(x=414, y=193,
                       room_name_text=GameText('', 430, 210, 45),
                       player_count_text=GameText('', 683, 210, 40),
                       crate_date_text=GameText('', 427, 270, 35),
                       room_status_text=GameText('', 644, 270, 35),
-                      icon_location=(555, 202)),
+                      icon_location=(610, 202)),
 
         RoomItemPanel(x=414, y=344,
                       room_name_text=GameText('', 430, 360, 45),
                       player_count_text=GameText('', 683, 360, 40),
                       crate_date_text=GameText('', 427, 420, 35),
                       room_status_text=GameText('', 644, 420, 35),
-                      icon_location=(555, 353)),
+                      icon_location=(610, 353)),
     ]

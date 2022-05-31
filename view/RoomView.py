@@ -97,6 +97,9 @@ class RoomView(BasicView):
         lock.acquire()
         self.clear_view(self.bg_color)
 
+        room_name_x, room_name_y = self.calculate_room_name_text_center(self.room_name, 356), 20
+        self.draw_game_text(self.room_name, room_name_x, room_name_y, 50)
+
         if self.selected == 0:
             self.draw_ready_button(self.selected_color)
             self.draw_leave_button(None)
@@ -106,20 +109,21 @@ class RoomView(BasicView):
 
         for i, r in enumerate(self.players):
             if r.display is not False:
-                # 方格
-                self.draw_rect(r.x, r.y, r.width, r.height, r.bg_color)
+
+                if i == 0:
+                    self.draw_image(r'img/player1_card.png', r.x, r.y)
+                else:
+                    self.draw_image(r'img/player2_card.png', r.x, r.y)
 
                 name = r.player_name
                 name_x = r.name_text_location[0]
                 name_y = r.name_text_location[1]
-                self.draw_game_text(name, name_x, name_y, 30)
+                self.draw_game_text(name, name_x, name_y, 32, text_color=(0, 0, 0))
 
-                icon_x = r.icon_location[0]
-                icon_y = r.icon_location[1]
-                if i == 0:
-                    self.draw_image(r'img/player1.png', icon_x, icon_y)
-                else:
-                    self.draw_image(r'img/player2.png', icon_x, icon_y)
+                # 描述文字
+                desc_x = r.description_text_location[0]
+                desc_y = r.description_text_location[1]
+                self.draw_game_text(r.description_text, desc_x, desc_y, 18, text_color=(0, 0, 0))
         lock.release()
 
     def ready_battle(self, room_id):
@@ -130,9 +134,13 @@ class RoomView(BasicView):
         payload = leave_room_payload_template(room_id)
         self.socket_conn.send(str.encode(payload))
 
+    def calculate_room_name_text_center(self, text, base_locate):
+        size = len(text)
+        return base_locate - (size*5) + 20
+
 
 def create_empty_player_panel():
     return [
-        PlayerPanel(41, 47, player_name='', name_text_location=(240, 85), icon_location=(44, 112)),
-        PlayerPanel(423, 47, player_name='', name_text_location=(622, 85), icon_location=(472, 112)),
+        PlayerPanel(70, 57, player_name='', name_text_location=(180, 260), description_text_location=(117, 320)),
+        PlayerPanel(470, 57, player_name='', name_text_location=(580, 260), description_text_location=(516, 320)),
     ]

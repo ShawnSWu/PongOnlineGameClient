@@ -13,9 +13,9 @@ class BasicView(object):
     def clear_view(self, bg_color):
         self.screen.fill(bg_color)
 
-    def draw_game_text(self, game_text, x, y, size, bg_color=None):
+    def draw_game_text(self, game_text, x, y, size, bg_color=None, text_color=(203, 202, 203)):
         head_font = pygame.font.Font('font/coders_crux.ttf', size)
-        self.screen.blit(head_font.render(str(game_text), True, (203, 202, 203), bg_color), (x, y))
+        self.screen.blit(head_font.render(str(game_text), True, text_color, bg_color), (x, y))
 
     def draw_rect(self, x, y, width, height, color):
         rect = pygame.Rect(x, y, width, height)

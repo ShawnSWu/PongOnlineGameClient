@@ -13,7 +13,8 @@ ReadyStartHeader = "RS"
 
 StartBattleHeader = "SB"
 BattleSituationHeader = "BS"
-BattleOperationHeader = "BO"
+BattleActionHeader = "BA"
+BattleOverHeader = "BO"
 GiveUpBattleHeader = "GB"
 GiveUpByMyselfHeader = "GM"
 
@@ -77,6 +78,12 @@ def parse_battle_info(payload):
     return ball_x, ball_y, player1_x, player1_y, player1_score, player2_x, player2_y, player2_score
 
 
+def parse_battle_over(payload):
+    payload = _remove_header_and_terminator(payload)
+    over_room_id = payload.split(',')
+    pass
+
+
 def create_room_payload_template(room_name):
     return "CR{room_name}~".format(room_name=room_name)
 
@@ -98,11 +105,11 @@ def leave_room_payload_template(room_id):
 
 
 def battle_move_up_payload_template():
-    return "BOU~"
+    return "BAU~"
 
 
 def battle_move_down_payload_template():
-    return "BOD~"
+    return "BAD~"
 
 
 def battle_give_up_payload_template(room_id):
