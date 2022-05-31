@@ -124,6 +124,12 @@ class RoomView(BasicView):
                 desc_x = r.description_text_location[0]
                 desc_y = r.description_text_location[1]
                 self.draw_game_text(r.description_text, desc_x, desc_y, 18, text_color=(0, 0, 0))
+
+                if int(r.ready_status) == 1:
+                    ready_x = r.ready_tag_location[0]
+                    ready_y = r.ready_tag_location[1]
+                    self.draw_image(r'img/ready_tag.png', ready_x, ready_y)
+
         lock.release()
 
     def ready_battle(self, room_id):
@@ -141,6 +147,8 @@ class RoomView(BasicView):
 
 def create_empty_player_panel():
     return [
-        PlayerPanel(70, 57, player_name='', name_text_location=(180, 260), description_text_location=(117, 320)),
-        PlayerPanel(470, 57, player_name='', name_text_location=(580, 260), description_text_location=(516, 320)),
+        PlayerPanel(70, 85, player_name='', name_text_location=(180, 287),
+                    description_text_location=(117, 348), ready_tag_location=(98, 78)),
+        PlayerPanel(470, 85, player_name='', name_text_location=(580, 287),
+                    description_text_location=(516, 348),  ready_tag_location=(500, 78)),
     ]
