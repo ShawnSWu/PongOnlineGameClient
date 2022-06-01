@@ -3,6 +3,7 @@ from online.model.RoomItemModel import RoomItemModel
 
 RoomListHeader = "RL"
 LeaveLobby = "LL"
+OnlinePlayerCount = "OC"
 
 CreateRoomHeader = "CR"
 RoomDetailHeader = "RD"
@@ -60,6 +61,11 @@ def parse_player_list(payload):
 
     return RoomInternalModel(room_id, room_name, player1_id, player1_name, player1_ready_status,
                              player2_id, player2_name, player2_ready_status)
+
+
+def parse_online_player_count(payload):
+    online_player_count = _remove_header_and_terminator(payload)
+    return online_player_count
 
 
 def parse_battle_info(payload):

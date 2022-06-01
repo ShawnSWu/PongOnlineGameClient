@@ -4,7 +4,8 @@ import socket
 import pygame
 
 from online.payload import Payload
-from online.payload.Payload import parse_room_list, parse_player_list, parse_battle_info, parse_battle_over
+from online.payload.Payload import parse_room_list, parse_player_list, parse_battle_info, parse_battle_over, \
+    parse_online_player_count
 from view.BattleView import BattleView
 from view.LobbyView import LobbyView
 from view.RoomView import RoomView
@@ -142,4 +143,9 @@ class Client:
             # 戰鬥結束提醒
             print("戰鬥結束")
             pass
+
+        elif header == Payload.OnlinePlayerCount:
+            # 更新當下大廳人數
+            online_player_count = parse_online_player_count(payload)
+            self.lobby.online_player_count = int(online_player_count)
 

@@ -12,8 +12,6 @@ lock = threading.Lock()
 
 
 class PlayerPaddle:
-    COLOR = (255, 255, 255)
-
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -21,17 +19,12 @@ class PlayerPaddle:
         self.height = 150
         self.score = 0
 
-    def draw(self, win):
-        pygame.draw.rect(
-            win, self.COLOR, (self.x, self.y, self.width, self.height))
-
 
 class Ball:
-    def __init__(self, x, y, radius):
+    def __init__(self, x, y):
         self.x = self.original_x = x
         self.y = self.original_y = y
-        self.color = (196, 88, 88)
-        self.radius = radius
+        self.image = r'img/ball.png'
 
 
 class BattleView(BasicView):
@@ -44,23 +37,31 @@ class BattleView(BasicView):
         self.left_paddle = PlayerPaddle(0, h / 2)
         self.room_id = ''
         self.right_paddle = PlayerPaddle(w - 50, h / 2)
-        self.ball = Ball(w / 2, h / 2, BALL_RADIUS)
+        self.ball = Ball(w / 2, h / 2)
 
     def draw(self):
         lock.acquire()
         self.clear_view(self.bg_color)
 
+        # 中線
+        w, h = self.get_width_height()
+        self.draw_rect(w / 2, 0, 2, h, (203, 202, 203))
+
+        # hint text
+        self.draw_game_text("[z]  -> Surrender", 35, h - 20, 20, bg_color=(94, 94, 94))
+        self.draw_game_text("Down -> Move down", 35, h - 35, 20, bg_color=(94, 94, 94))
+        self.draw_game_text("Up   -> Move up", 35, h - 50, 20, bg_color=(94, 94, 94))
+
         left_paddle = self.left_paddle
-        self.draw_rect(left_paddle.x, left_paddle.y, left_paddle.width, left_paddle.height, left_paddle.COLOR)
+        self.draw_rect(left_paddle.x, left_paddle.y, left_paddle.width, left_paddle.height, (0, 102, 233))
         self.draw_game_text(left_paddle.score, 195, 15, 150)
 
-
         right_paddle = self.right_paddle
-        self.draw_rect(right_paddle.x, right_paddle.y, right_paddle.width, right_paddle.height, right_paddle.COLOR)
+        self.draw_rect(right_paddle.x, right_paddle.y, right_paddle.width, right_paddle.height, (122, 30, 11))
         self.draw_game_text(right_paddle.score, 580, 15, 150)
 
         ball = self.ball
-        pygame.draw.circle(self.screen, ball.color, (ball.x, ball.y), ball.radius)
+        self.draw_image(ball.image, ball.x, ball.y)
 
         self.screen_update_view()
         lock.release()
@@ -89,7 +90,6 @@ class BattleView(BasicView):
         # 戰鬥準備開始提醒
         self.draw_game_text("READY", 280, 284, 150)
 
-
     def listen_player_operation(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -100,7 +100,8 @@ class BattleView(BasicView):
             self.battle_move_up()
         elif event.key == pygame.K_DOWN:
             self.battle_move_down()
-        elif event.key == pygame.K_RETURN:
+        # 12552 mean 'keyboard z' ,have no idea why pygame.K_z not working
+        elif event.key == 12552:
             self.battle_give_up()
 
     def battle_move_up(self):

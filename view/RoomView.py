@@ -131,7 +131,7 @@ class RoomView(BasicView):
                 desc_y = r.description_text_location[1]
                 self.draw_game_text(r.description_text, desc_x, desc_y, 18, text_color=(0, 0, 0))
 
-                if int(r.ready_status) == 1:
+                if r.ready_status == '1':
                     ready_x = r.ready_tag_location[0]
                     ready_y = r.ready_tag_location[1]
                     self.draw_image(r'img/ready_tag.png', ready_x, ready_y)

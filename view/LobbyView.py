@@ -16,6 +16,7 @@ class LobbyView(BasicView):
         self.rooms_panel = create_empty_room_panel()
         self.rooms_data = []
         self.selected = 0
+        self.online_player_count = 0
         self.selected_color = (65, 105, 105)
 
     def update_rooms_data(self, room_list):
@@ -37,7 +38,6 @@ class LobbyView(BasicView):
 
     def draw(self):
         lock.acquire()
-
         self.clear_view(self.bg_color)
         if self.get_room_count() == 0:
             self.display_no_room()
@@ -73,6 +73,10 @@ class LobbyView(BasicView):
                 self.draw_game_text(_mapping_room_status(str(rs.text)), (rs.x[0]), (rs.y[0]), (rs.size[0]))
 
                 self.draw_image(r'img/swords.png', r.icon_location[0], r.icon_location[1])
+
+        # 顯示線上人數
+        current_player_count = "Current online player:{count}".format(count=self.online_player_count)
+        self.draw_game_text(current_player_count, x=545, y=15, size=25)
 
         self.screen_update_view()
         lock.release()
