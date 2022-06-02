@@ -1,6 +1,7 @@
 from online.model.RoomInternalModel import RoomInternalModel
 from online.model.RoomItemModel import RoomItemModel
 
+PlayerNameSetting = "PN"
 RoomListHeader = "RL"
 LeaveLobby = "LL"
 OnlinePlayerCount = "OC"
@@ -89,6 +90,9 @@ def parse_battle_over(payload):
     over_room_id = payload.split(',')
     pass
 
+
+def set_player_name_payload_template(player_name):
+    return "PN{player_name}~".format(player_name=player_name)
 
 def create_room_payload_template(room_name):
     return "CR{room_name}~".format(room_name=room_name)

@@ -3,9 +3,9 @@ import sys
 import re
 import pygame
 
-from menu.main_menu import MainMenu
+from menu.MainMenu import MainMenu
 from pygame.locals import *
-from menu.online_menu import OnlineMenu
+from menu.OnlineMenu import OnlineMenu
 from online.Client import Client
 from view.BasicView import BasicView
 from view.LobbyView import LobbyView
@@ -36,7 +36,7 @@ class StartView(BasicView):
         self.clear_view(bg_color)
         self.draw_game_title()
         om.change_input_text(value)
-        om.update_menu()
+        om.draw_menu()
         self.screen_update_view()
 
     def draw_online_option(self):
@@ -45,7 +45,7 @@ class StartView(BasicView):
 
         width, height = self.screen.get_size()
         om = OnlineMenu(self.screen, width, height)
-        om.update_menu()
+        om.draw_menu()
         self.screen_update_view()
 
         self.listen_online_menu(om)
@@ -61,18 +61,18 @@ class StartView(BasicView):
                     if event.key == pygame.K_UP:
                         if om.selected >= 1:
                             om.previous()
-                            om.update_menu()
+                            om.draw_menu()
                             self.screen_update_view()
 
                             if om.selected == 1:
                                 self.listen_input_box_player_name(om)
                                 om.next()
-                                om.update_menu()
+                                om.draw_menu()
 
                     elif event.key == pygame.K_DOWN:
                         if om.selected < len(om.menu_option) - 1:
                             om.next()
-                            om.update_menu()
+                            om.draw_menu()
 
                     if event.key == pygame.K_RETURN:
                         if om.selected == 2:
@@ -81,11 +81,12 @@ class StartView(BasicView):
                             if re_result is not None:
                                 player_name = om.menu_option[1].text
 
-                                c = Client(self.screen)
-                                c.start_online_game(player_name)
+                                if len(player_name) > 0 and len(player_name) <= 6:
+                                    c = Client(self.screen)
+                                    c.start_online_game(player_name)
 
-                                # 回來後 顯示HomeMenu
-                                self.start()
+                                    # 回來後 顯示HomeMenu
+                                    self.start()
 
                         elif om.selected == 3:
                             self.clear_view(bg_color)
@@ -110,7 +111,7 @@ class StartView(BasicView):
     def draw_main_menu(self):
         width, height = self.screen.get_size()
         menu = MainMenu(self.screen, width, height)
-        menu.update_menu()
+        menu.draw_menu()
         self.screen_update_view()
 
         # 監聽main menu事件
@@ -125,10 +126,10 @@ class StartView(BasicView):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         menu.previous()
-                        menu.update_menu()
+                        menu.draw_menu()
                     elif event.key == pygame.K_DOWN:
                         menu.next()
-                        menu.update_menu()
+                        menu.draw_menu()
 
                     if event.key == pygame.K_RETURN:
                         if menu.selected == 0:

@@ -9,7 +9,7 @@ from view.panel.RoomItemPanel import RoomItemPanel
 lock = threading.Lock()
 
 class LobbyView(BasicView):
-    def __init__(self, screen, socket_conn):
+    def __init__(self, screen, socket_conn, player_name):
         super().__init__(screen)
         self.socket_conn = socket_conn
         self.bg_color = (38, 38, 38)
@@ -17,6 +17,7 @@ class LobbyView(BasicView):
         self.rooms_data = []
         self.selected = 0
         self.online_player_count = 0
+        self.player_name = player_name
         self.selected_color = (65, 105, 105)
 
     def update_rooms_data(self, room_list):
@@ -119,7 +120,7 @@ class LobbyView(BasicView):
             if self.selected == self.get_room_count():
                 # 創建房間
                 print("創建房間")
-                room_name = "My ROOM"
+                room_name = "{player} ROOM".format(player=self.player_name)
                 self.create_room(self.socket_conn, room_name)
             elif self.selected == self.get_room_count() + 1:
                 # 離開大廳

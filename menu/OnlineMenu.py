@@ -1,11 +1,6 @@
 import pygame
 
-
-class MenuOption:
-    def __init__(self, text, x, y):
-        self.text = text
-        self.x = x
-        self.y = y
+from menu.BasicMenu import MenuOption
 
 
 def game_text(text, bg_color):
@@ -35,10 +30,13 @@ class OnlineMenu:
         if self.selected < len(self.menu_option) - 1:
             self.selected += 1
 
-    def update_menu(self):
+    def draw_menu(self):
         for i, v in enumerate(self.menu_option):
             if i == self.selected:
-                text_start = game_text(v.text, self.selected_color)
+                if len(self.menu_option[1].text) > 6:
+                    text_start = game_text(v.text, (255, 74, 74))
+                else:
+                    text_start = game_text(v.text, self.selected_color)
                 self.screen.blit(text_start, (v.x, v.y))
             else:
                 text_start = game_text(v.text, (38, 38, 38))

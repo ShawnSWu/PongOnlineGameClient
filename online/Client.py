@@ -5,7 +5,7 @@ import pygame
 
 from online.payload import Payload
 from online.payload.Payload import parse_room_list, parse_player_list, parse_battle_info, parse_battle_over, \
-    parse_online_player_count
+    parse_online_player_count, set_player_name_payload_template
 from view.BattleView import BattleView
 from view.LobbyView import LobbyView
 from view.RoomView import RoomView
@@ -35,8 +35,9 @@ class Client:
 
         # 連線Server
         socket_conn = self.connect_server()
+        set_player_name(socket_conn, player_name)
 
-        self.lobby = LobbyView(self.screen, socket_conn)
+        self.lobby = LobbyView(self.screen, socket_conn, self.player_name)
         self.room = RoomView(self.screen, socket_conn)
         self.battle = BattleView(self.screen, socket_conn)
 
@@ -149,3 +150,7 @@ class Client:
             online_player_count = parse_online_player_count(payload)
             self.lobby.online_player_count = int(online_player_count)
 
+
+def set_player_name(socket_conn, player_name):
+    payload = set_player_name_payload_template(player_name)
+    socket_conn.send(str.encode(payload))

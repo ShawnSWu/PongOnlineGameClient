@@ -148,7 +148,21 @@ class RoomView(BasicView):
 
     def calculate_room_name_text_center(self, text, base_locate):
         size = len(text)
-        return base_locate - (size * 5) + 20
+        if size == 11:
+            locate = base_locate - (size * 5) + 6
+        elif size == 10:
+            locate = base_locate - (size * 5) + 8
+        elif size == 9:
+            locate = base_locate - (size * 5) + 10
+        elif size == 8:
+            locate = base_locate - (size * 5) + 12
+        elif size == 7:
+            locate = base_locate - (size * 5) + 14
+        elif size == 6:
+            locate = base_locate - (size * 5) + 16
+        else:
+            locate = base_locate - (size * 5)
+        return locate
 
 
 def create_empty_player_panel():
