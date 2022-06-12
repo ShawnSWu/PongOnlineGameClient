@@ -1,3 +1,5 @@
+import json
+import os
 import threading
 import socket
 
@@ -71,8 +73,12 @@ class Client:
             self.lobby.screen_update_view()
 
     def connect_server(self):
-        SERVER_IP = "127.0.0.1"
-        SERVER_PORT = 4321
+        config = open('config/prd.json')
+        properties = json.load(config)
+
+        SERVER_IP = properties['HOST_IP']
+        SERVER_PORT = properties['HOST_PORT']
+
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((SERVER_IP, SERVER_PORT))
         return s
