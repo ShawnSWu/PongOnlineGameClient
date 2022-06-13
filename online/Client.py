@@ -1,5 +1,4 @@
 import json
-import os
 import threading
 import socket
 
@@ -37,6 +36,11 @@ class Client:
 
         # 連線Server
         socket_conn = self.connect_server()
+
+        if socket_conn is False:
+            show_server_not_work_msg(self.screen)
+            return
+
         set_player_name(socket_conn, player_name)
 
         self.lobby = LobbyView(self.screen, socket_conn, self.player_name)
@@ -80,7 +84,14 @@ class Client:
         SERVER_PORT = properties['HOST_PORT']
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((SERVER_IP, SERVER_PORT))
+        s.settimeout(5)
+
+        try:
+            s.connect((SERVER_IP, SERVER_PORT))
+        except socket.error as msg:
+            print("Connection error:{msg}".format(msg=msg))
+            return False
+
         return s
 
     def listen_server_payload(self, s):
@@ -160,3 +171,12 @@ class Client:
 def set_player_name(socket_conn, player_name):
     payload = set_player_name_payload_template(player_name)
     socket_conn.send(str.encode(payload))
+
+
+def show_server_not_work_msg(screen):
+    head_font = pygame.font.Font('font/coders_crux.ttf', 25)
+    msg1 = str("Server might shut down for some reason -> $$$")
+    screen.blit(head_font.render(msg1, True, (186, 2, 2)), (180, 540))
+    msg2 = str("Please contact author Shawn.")
+    screen.blit(head_font.render(msg2, True, (186, 2, 2)), (270, 560))
+    pygame.display.update()

@@ -85,9 +85,6 @@ class StartView(BasicView):
                                     c = Client(self.screen)
                                     c.start_online_game(player_name)
 
-                                    # 回來後 顯示HomeMenu
-                                    self.start()
-
                         elif om.selected == 3:
                             self.clear_view(bg_color)
                             self.draw_game_title()
