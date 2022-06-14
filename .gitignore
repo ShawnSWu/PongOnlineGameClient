@@ -5,3 +5,8 @@ venv
 *.ttf
 
 prd.json
+
+dist
+build
+
+*.spec
