@@ -1,6 +1,7 @@
 import json
 import threading
 import socket
+import time
 
 import pygame
 
@@ -51,6 +52,10 @@ class Client:
         listen_server_thread = threading.Thread(target=self.listen_server_payload, args=(socket_conn,))
         listen_server_thread.start()
 
+        # 心跳封包
+        heart_beat_thread = threading.Thread(target=heart_beat_job, args=(socket_conn,))
+        heart_beat_thread.start()
+
         clock = pygame.time.Clock()
         # Lobby Loop
         while True:
@@ -75,6 +80,7 @@ class Client:
                 break
 
             self.lobby.screen_update_view()
+        return False
 
     def connect_server(self):
         config = open('config/prd.json')
@@ -84,7 +90,6 @@ class Client:
         SERVER_PORT = properties['HOST_PORT']
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(5)
 
         try:
             s.connect((SERVER_IP, SERVER_PORT))
@@ -180,3 +185,10 @@ def show_server_not_work_msg(screen):
     msg2 = str("Please contact author Shawn.")
     screen.blit(head_font.render(msg2, True, (186, 2, 2)), (270, 560))
     pygame.display.update()
+
+
+def heart_beat_job(socket_conn):
+    while True:
+        socket_conn.send(str.encode("HB~"))
+        time.sleep(3)
+

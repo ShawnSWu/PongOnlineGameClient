@@ -83,7 +83,9 @@ class StartView(BasicView):
 
                                 if len(player_name) > 0 and len(player_name) <= 6:
                                     c = Client(self.screen)
-                                    c.start_online_game(player_name)
+                                    is_leave_lobby = c.start_online_game(player_name)
+                                    if is_leave_lobby is False:
+                                        self.start()
 
                         elif om.selected == 3:
                             self.clear_view(bg_color)
