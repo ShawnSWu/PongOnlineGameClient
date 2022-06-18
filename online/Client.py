@@ -59,7 +59,7 @@ class Client:
         clock = pygame.time.Clock()
         # Lobby Loop
         while True:
-            clock.tick(120)
+            clock.tick(600)
 
             if self.scene == SceneLobby:
                 self.lobby.listen_player_operation()
@@ -103,13 +103,15 @@ class Client:
         print("開始監聽server")
         while True:
             payload = s.recv(1024)
+            split = payload.decode().split('~')
+            payload = "{last_payload}~".format(last_payload=split[len(split)-2])
 
             if len(payload) == 0:  # connection closed
                 s.close()
                 print('server closed connection.')
                 break
 
-            self.handle_receive_payload(payload.decode())
+            self.handle_receive_payload(payload)
 
     def handle_receive_payload(self, payload):
         header = payload[0:2]

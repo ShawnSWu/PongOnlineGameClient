@@ -101,17 +101,21 @@ class BattleView(BasicView):
         elif event.key == pygame.K_DOWN:
             self.battle_move_down()
         # 12552 mean 'keyboard z' ,have no idea why pygame.K_z not working
-        elif event.key == 12552:
+        elif event.key == 12552 or event.key == pygame.K_z:
             self.battle_give_up()
 
     def battle_move_up(self):
         payload = battle_move_up_payload_template()
-        self.socket_conn.send(str.encode(payload))
+        threading.Thread(target=sendByThread, args=(self.socket_conn, payload,)).start()
 
     def battle_move_down(self):
         payload = battle_move_down_payload_template()
-        self.socket_conn.send(str.encode(payload))
+        threading.Thread(target=sendByThread, args=(self.socket_conn, payload,)).start()
 
     def battle_give_up(self):
         payload = battle_give_up_payload_template(self.room_id)
-        self.socket_conn.send(str.encode(payload))
+        threading.Thread(target=sendByThread, args=(self.socket_conn, payload,)).start()
+
+
+def sendByThread(socket_conn, payload,):
+    socket_conn.send(str.encode(payload))
